@@ -361,3 +361,78 @@ const movies = [
     image: "https://flxt.tmsimg.com/assets/p22005_p_v8_aa.jpg",
   },
 ];
+const formMovies = document.getElementById("searchMoviesForm");
+const fromDate = document.getElementById("watchedFromIdInput");
+const toDate = document.getElementById("watchedToIdInput");
+const userId = document.getElementById("userIdInput");
+userId.setAttribute("maxLength", "2");
+const rate = document.getElementById("");
+const registerDates = [];
+    movies.forEach(({ ...movie }) => {
+      const registerDate = new Date(movie.watched);
+
+      registerDates.push(registerDate.getTime());
+    });
+    
+    const min = Math.min(...registerDates);
+    const max = Math.max(...registerDates);
+
+const validations = {
+  userIdInput: (idUser) => {
+    if (/^[0-9]*$/.test(idUser.value)) {
+      console.log("si papa");
+    }
+    if (!/^[0-9]*$/.test(idUser.value)) {
+      console.log("No papa");
+    }
+  },
+  watchedFromIdInput: (date) => {
+    
+    const dateFromSelected = new Date(date.value).getTime();
+    
+
+    if(min<=dateFromSelected && dateFromSelected <=max){
+      return dateFromSelected
+    }
+    if(!(min<=dateFromSelected && dateFromSelected <=max)){
+      console.log('no papa');
+    }
+  },
+  watchedToIdInput:(date)=>{
+    
+    const dateToSelected = new Date(date.value).getTime();
+    
+
+    if(min<=dateToSelected && dateToSelected <=max ){
+      console.log(validations[watchedFromIdInput](fromDate.value));
+    }
+    if(!(min<=dateToSelected && dateToSelected <=max)){
+      console.log('no papa');
+    }
+  }
+};
+/*
+const movieSawFor={
+    id: user.id,
+    username: user.username.
+    email: user.email,
+    fullAddress: `${user.address.street} - ${user.address.city}`
+    company: user.company.name,
+    movie: movie.title,
+    rate: movie.rate
+    };*/
+const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
+  const filmHasBeenSeenBy = movies.filter(
+    (movie) => movie.watched === fromDate
+  );
+};
+
+userId.addEventListener("keyup", (e) => {
+  validations[e.target.name](e.target);
+});
+fromDate.addEventListener("input", (e) => {
+  validations[e.target.name](e.target);
+});
+toDate.addEventListener("input", (e) => {
+  validations[e.target.name](e.target);
+});
