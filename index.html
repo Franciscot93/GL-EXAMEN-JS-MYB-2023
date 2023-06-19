@@ -19,36 +19,55 @@
         <div class="nav-element">opcion3</div>
         <div class="nav-element">opcion4</div>
       </section>
-      <section id="hero" class="box"></section>
+      <section id="hero" class="box"><img src="/ezgif.com-optimize.gif" alt=""></section>
       <section id="sectionForm" class="box">
         <h1>Search Movies for</h1>
         <form id="searchMoviesForm" action="Search">
           <div class="form-element">
             <label for="userIdInput">USER ID</label>
             <input name="userIdInput" id="userIdInput" type="text" />
+            <span id="userIdInputFine" class="itsFineInput">🙂👍</span>
+            <span id="userIdInputError"class="errorInput">There are no users with that ID. (The field only receives numeric values)</span>
           </div>
           <div class="form-element">
             <label for="watchedFromIdInput">MOVIES SEEN FROM</label>
             <input name="watchedFromIdInput" id="watchedFromIdInput" type="date" />
+            <span id="watchedFromIdInputFine" class="itsFineInput">🙂👍</span>
+            <span id="watchedFromIdInputError" class="errorInput">There are no movies on that date or the date set is wrong</span>
           </div>
           <div class="form-element">
             <label for="watchedToIdInput">MOVIES SEEN TO</label>
             <input name="watchedToIdInput" id="watchedToIdInput" type="date" />
+            <span id="watchedToIdInputFine" class="itsFineInput">🙂👍</span>
+            <span id="watchedToIdInputError" class="errorInput">There are no movies on that date or the date set is wrong</span>
           </div>
           <div class="form-element">
-            <label for="rateIdinput">RATE</label>
+            <label for="rateIdinput">MINIMUM RATE</label>
             <input name="rateIdinput" id="rateIdinput" type="text" />
+            <span id="rateIdinputFine" class="itsFineInput">🙂👍</span>
+            <span id="rateIdinputError" class="errorInput">The rate is out of range (example rate = 7.5)</span>
           </div>
-          <div class="form-element">
-            <button>SEARCH</button>
+          <div class="form-element buttons">
+            <button id="searchButton">SEARCH</button>
+            <button id="resetButton">RESET</button>
           </div>
         </form>
       </section>
-      <section id="B" class="box">B</section>
+      <section id="showMoviesPanel" class="box"><h2 id="panelTitle">Movies Panel</h2>
+        
+        
+      </section>
     </div>
 
 
-
+    <footer>
+      <div class="containerFooter">
+        <div class="footer-element">a </div>
+      <div class="footer-element">Francisco Torres ningun derecho reservado.</div>
+      <div class="footer-element"><a href="https://www.facebook.com/"><img src="/img/gratis-png-facebook-icono-de-blog-de-marketing-en-redes-sociales-facebook.png" alt=""></a><a href="https://www.instagram.com/"><img src="/img/instasplash.png" alt=""></a><a href="https://www.twitter.com/"><img src="/img/social_media_icons_blot_icons_set_512x512_0002_twitter.png" alt=""></a></div>
+      </div>
+      
+    </footer>
     <script src="/scripts/movies-filter.js"></script>
   </body>
 </html>

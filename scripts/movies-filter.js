@@ -361,78 +361,295 @@ const movies = [
     image: "https://flxt.tmsimg.com/assets/p22005_p_v8_aa.jpg",
   },
 ];
-const formMovies = document.getElementById("searchMoviesForm");
+const resetButton=document.getElementById('resetButton')
+const showMoviesPanel=document.getElementById('showMoviesPanel')
+const searchForm = document.getElementById("searchMoviesForm");
+const moviesSearchFormInputs = document.querySelectorAll("input");
 const fromDate = document.getElementById("watchedFromIdInput");
 const toDate = document.getElementById("watchedToIdInput");
 const userId = document.getElementById("userIdInput");
 userId.setAttribute("maxLength", "2");
-const rate = document.getElementById("");
-const registerDates = [];
-    movies.forEach(({ ...movie }) => {
-      const registerDate = new Date(movie.watched);
+const rate = document.getElementById("rateIdinput");
+rate.setAttribute("maxLength", "3");
+const searchButton = document.getElementById("searchButton");
 
-      registerDates.push(registerDate.getTime());
-    });
-    
-    const min = Math.min(...registerDates);
-    const max = Math.max(...registerDates);
+/* CREO UN ARREGLO VACIO AL CUAL LE AGREGO LAS FECHAS EN MILISEGUNDOS DE TODAS LAS PELICULAS  
+PARA LUEGO VALIDAR QUE LAS FECHAS INGRESADAS ESTAN EN EL RANGO DE FECHAS EXISTENTES EN EL ARREGLO.
+CREO UNA VARIABLE dateHelper PARA ALMACENAR EL VALOR DE LA PRIMERA FECHA Y COMPARAR LA SEGUNDA*/
+const registerDates = [];
+let dateHelper = 0;
+movies.forEach(({ ...movie }) => {
+  const registerDate = new Date(movie.watched);
+
+  registerDates.push(registerDate.getTime());
+});
+
+const firstDateRegistered = Math.min(...registerDates);
+const lastDateRegistered = Math.max(...registerDates);
+
+/* Creo un objeto con los haciendo referencia a los 4 inputs */
+const moviesFieldsInputs = {
+  userIdInput: false,
+  watchedFromIdInput: false,
+  watchedToIdInput: false,
+  rateIdinput: false,
+};
 
 const validations = {
   userIdInput: (idUser) => {
     if (/^[0-9]*$/.test(idUser.value)) {
-      console.log("si papa");
+      
+      return true;
     }
-    if (!/^[0-9]*$/.test(idUser.value)) {
-      console.log("No papa");
+    if (!/^[0-9]*$/.test(idUser.value) ) {
+      
+      return false;
+    }
+    if(idUser.value===''){
+      return false
     }
   },
   watchedFromIdInput: (date) => {
-    
-    const dateFromSelected = new Date(date.value).getTime();
-    
+    const dateFromSelected = new Date(date.value).getTime() + 67653000;
 
-    if(min<=dateFromSelected && dateFromSelected <=max){
-      return dateFromSelected
+    if (
+      firstDateRegistered <= dateFromSelected &&
+      dateFromSelected <= lastDateRegistered
+    ) {
+      dateHelper = dateFromSelected;
+
+      return true;
     }
-    if(!(min<=dateFromSelected && dateFromSelected <=max)){
-      console.log('no papa');
+    if (
+      !(
+        (firstDateRegistered <= dateFromSelected) |
+        (dateFromSelected <= lastDateRegistered)
+      )
+    ) {
+      
+
+      return false;
     }
   },
-  watchedToIdInput:(date)=>{
-    
-    const dateToSelected = new Date(date.value).getTime();
-    
+  watchedToIdInput: (date) => {
+    const dateToSelected = new Date(date.value).getTime() + 26541000;
 
-    if(min<=dateToSelected && dateToSelected <=max ){
-      console.log(validations[watchedFromIdInput](fromDate.value));
+    if (
+      firstDateRegistered <= dateToSelected &&
+      dateToSelected <= lastDateRegistered &&
+      dateHelper <= dateToSelected &&
+      dateHelper != 0
+    ) {
+      return true;
     }
-    if(!(min<=dateToSelected && dateToSelected <=max)){
-      console.log('no papa');
+    if (
+      !(
+        firstDateRegistered <= dateToSelected &&
+        dateToSelected <= lastDateRegistered
+      ) | !(dateHelper <= dateToSelected)
+    ) {
+      return false;
     }
+  },
+  rateIdinput: (rate) => {
+    if (
+      0 <= Number(rate.value) &&
+      Number(rate.value) <= 10 &&
+      rate.value != ""
+    ) {
+      return true;
+    }
+    if (!(0 <= Number(rate.value) && Number(rate.value) <= 10)) {
+      return false;
+    }
+  },
+};
+
+
+moviesSearchFormInputs.forEach((input) => {
+  if ((input.name === "userIdInput") | (input.name === "rateIdinput")) {
+    input.addEventListener("keyup", (e) => {
+      validations[input.name](input);
+      if (validations[input.name](input)) {
+        moviesFieldsInputs[input.name] = true;
+        document.getElementById(`${input.name}Fine`).classList.add('itsFineInputActive')
+        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInput')
+        document.getElementById(`${input.name}Error`).classList.add('errorInput')
+        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
+        
+      }
+      if (!validations[input.name](input) | (input.value === "")) {
+        moviesFieldsInputs[input.name] = false;
+        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
+        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
+        document.getElementById(`${input.name}Error`).classList.add('errorInputActive')
+        document.getElementById(`${input.name}Error`).classList.remove('errorInput')
+        
+      }
+      if (input.value ===""){
+        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
+        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
+        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
+        document.getElementById(`${input.name}Error`).classList.add('errorInput')
+      }
+    });
   }
-};
-/*
-const movieSawFor={
-    id: user.id,
-    username: user.username.
-    email: user.email,
-    fullAddress: `${user.address.street} - ${user.address.city}`
-    company: user.company.name,
-    movie: movie.title,
-    rate: movie.rate
-    };*/
-const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
-  const filmHasBeenSeenBy = movies.filter(
-    (movie) => movie.watched === fromDate
-  );
-};
+  if (
+    (input.name === "watchedFromIdInput") |
+    (input.name === "watchedToIdInput")
+  ) {
+    input.addEventListener("input", (e) => {
+      validations[input.name](input);
+      if (validations[input.name](input)) {
+        
+        moviesFieldsInputs[input.name] = true;
+        document.getElementById(`${input.name}Fine`).classList.add('itsFineInputActive')
+        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInput')
+        document.getElementById(`${input.name}Error`).classList.add('errorInput')
+        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
+        
+        
+      }
+      if (!validations[input.name](input) | (input.value === "")) {
+        moviesFieldsInputs[input.name] = false;
+        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
+        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
+        document.getElementById(`${input.name}Error`).classList.add('errorInputActive')
+        document.getElementById(`${input.name}Error`).classList.remove('errorInput')
+      }
 
-userId.addEventListener("keyup", (e) => {
-  validations[e.target.name](e.target);
+
+      if(input.value === ""){
+        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
+        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
+        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
+        document.getElementById(`${input.name}Error`).classList.add('errorInput')
+      }
+    });
+  }
 });
-fromDate.addEventListener("input", (e) => {
-  validations[e.target.name](e.target);
+
+
+const requestedMovies=[];
+  
+
+
+
+const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
+
+  const registerViewer=({userId:userId,movie:movie})=>{
+    users.forEach(user=>{
+    if(user.id===Number(userId)){
+      const viewer ={
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        fullAddress: `${user.address.street} - ${user.address.city}`,
+        company: user.company.name,
+        movie: movie.title,
+        rate: movie.rate
+        }
+        console.log(viewer);
+        requestedMovies.push(viewer)
+    }
+  })
+  }
+
+
+        if(userId.value){
+          movies.forEach(({...movie})=>{
+
+            if(movie.userId===Number(userId.value) && new Date(fromDate.value).getTime() <= new Date(movie.watched).getTime() &&
+            new Date(movie.watched).getTime() <= new Date(toDate.value).getTime() && Number(rate.value)<=movie.rate){
+              
+              registerViewer({userId:userId.value,movie:movie})
+            }
+
+          });
+        }
+
+        if(!userId.value){
+
+          movies.forEach(({...movie})=>{
+
+            if(new Date(fromDate.value).getTime() <= new Date(movie.watched).getTime() &&
+            new Date(movie.watched).getTime() <= new Date(toDate.value).getTime() && Number(rate.value)<=movie.rate){
+              
+              registerViewer({userId:movie.userId,movie:movie})
+            }
+
+          })
+          
+        }
+
+       
+
+
+        console.log(requestedMovies);
+
+      }
+      
+ 
+
+
+searchButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (
+    moviesFieldsInputs.watchedFromIdInput &&
+    moviesFieldsInputs.watchedToIdInput &&
+    moviesFieldsInputs.rateIdinput
+  ) {
+
+    setTimeout(filterMovies({
+      users: users,
+      movies: movies,
+      userId: userId,
+      fromDate: fromDate,
+      toDate: toDate,
+      rate: rate,
+    }),1500)
+    ;
+
+    
+
+
+    setTimeout(
+      requestedMovies.map(movie=>{
+        const movieViewerCard=document.createElement('div')
+        movieViewerCard.classList.toggle('box1')
+  
+        const movieTitle=document.createElement('h3')
+        movieTitle.textContent= `${movie.movie}`
+        
+        const infoMovie=document.createElement('div')
+        infoMovie.textContent=`
+        ID: ${movie.id}<br>
+
+        Username: ${movie.username}
+
+        email: ${movie.email}
+
+        fullAddress: ${movie.fullAddress}
+
+        company: ${movie.company}
+
+        rate: ${movie.rate}`
+
+        movieViewerCard.appendChild(movieTitle)
+        movieViewerCard.append(infoMovie)
+        showMoviesPanel.appendChild(movieViewerCard)
+      }),2500
+    
+
+    )
+  }
+
+
+  
 });
-toDate.addEventListener("input", (e) => {
-  validations[e.target.name](e.target);
-});
+
+resetButton.addEventListener('click',(e)=>{
+  e.preventDefault()
+  searchForm.reset()
+})
+
