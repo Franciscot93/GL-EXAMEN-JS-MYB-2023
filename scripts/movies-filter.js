@@ -389,8 +389,6 @@ movies.forEach(({ ...movie }) => {
 const firstDateRegistered = Math.min(...registerDates);
 const lastDateRegistered = Math.max(...registerDates);
 
-
-
 /* Creo un objeto con los haciendo referencia a los 4 inputs */
 const moviesFieldsInputs = {
   userIdInput: false,
@@ -398,7 +396,6 @@ const moviesFieldsInputs = {
   watchedToIdInput: false,
   rateIdinput: false,
 };
-
 
 /* Diccionario con las funciones de validacion utilizadas en cada input */
 const validations = {
@@ -412,7 +409,7 @@ const validations = {
     if (idUser.value === "") {
       return false;
     }
-    if (idUser.value<=0 && 10<idUser.value) {
+    if (idUser.value <= 0 && 10 < idUser.value) {
       return false;
     }
   },
@@ -445,7 +442,7 @@ const validations = {
       dateHelper <= dateToSelected &&
       dateHelper != 0
     ) {
-      console.log(dateToSelected)
+      console.log(dateToSelected);
       return true;
     }
     if (
@@ -470,7 +467,6 @@ const validations = {
     }
   },
 };
-
 
 /* agrego un eventlistener a cada input, este listener cumple la funcion de mostrar
 el error al llenar un input o el exito al hacerlo, se hace mas extenso porque en el caso de los input del tipo DATE 
@@ -586,8 +582,8 @@ registerViewer
 */
 
 const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
-  const fromDateValueCompare=new Date(fromDate.value).getTime()+ 67653000;
-  const toDateValueCompare=new Date(toDate.value).getTime()+26541000;
+  const fromDateValueCompare = new Date(fromDate.value).getTime() + 67653000;
+  const toDateValueCompare = new Date(toDate.value).getTime() + 26541000;
 
   const registerViewer = ({ userId: userId, movie: movie }) => {
     users.forEach((user) => {
@@ -601,7 +597,7 @@ const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
           movie: movie.title,
           rate: movie.rate,
         };
-        
+
         requestedMovies.push(viewer);
       }
     });
@@ -609,36 +605,30 @@ const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
 
   if (userId.value) {
     movies.forEach(({ ...movie }) => {
-      if (
-        movie.userId === Number(userId.value) 
-      ) {
-        
-        if(fromDateValueCompare <=
-        new Date(movie.watched).getTime() &&
-        new Date(movie.watched).getTime() <= toDateValueCompare &&
-        Number(rate.value) <= movie.rate){
-          
+      if (movie.userId === Number(userId.value)) {
+        if (
+          fromDateValueCompare <= new Date(movie.watched).getTime() &&
+          new Date(movie.watched).getTime() <= toDateValueCompare &&
+          Number(rate.value) <= movie.rate
+        ) {
           registerViewer({ userId: movie.userId, movie: movie });
         }
-        
       }
     });
   }
 
   if (!userId.value) {
     movies.forEach(({ ...movie }) => {
-      if (fromDateValueCompare <=
-        new Date(movie.watched).getTime() &&
+      if (
+        fromDateValueCompare <= new Date(movie.watched).getTime() &&
         new Date(movie.watched).getTime() <= toDateValueCompare &&
-        Number(rate.value) <= movie.rate) {
+        Number(rate.value) <= movie.rate
+      ) {
         registerViewer({ userId: movie.userId, movie: movie });
       }
     });
   }
-
-  
 };
-
 
 /* agrego listener al boton de busqueda el cual ejecuta la funcion de busqueda y luego ejecuta un map 
 sobre el array que posee las peliculas filtradas  para mostrar
@@ -663,68 +653,52 @@ searchButton.addEventListener("click", (e) => {
       1500
     );
 
-    
-      requestedMovies.map((movie) => {
+    requestedMovies.map((movie) => {
+      const movieViewerCard = document.createElement("div");
+      movieViewerCard.classList.add("box1");
 
-        const movieViewerCard = document.createElement("div");
-        movieViewerCard.classList.add("box1");
+      const movieTitle = document.createElement("h3");
+      movieTitle.textContent = `${movie.movie}`;
 
-        const movieTitle = document.createElement("h3");
-        movieTitle.textContent = `${movie.movie}`;
-        
-        const movieUserID = document.createElement("h5");
-        movieUserID.textContent = `ID: ${movie.id}`
-        const movieUserName=document.createElement("h5")
-        movieUserName.textContent=`Username: ${movie.username}`
-        const movieUserEmail=document.createElement("h5")
-        movieUserEmail.textContent=`email: ${movie.email}`
-        const movieFullAddress=document.createElement("h5")
-        movieFullAddress.textContent=` fullAddress: ${movie.fullAddress}`
-        const movieCompany=document.createElement("h5")
-        movieCompany.textContent=`company: ${movie.company}`
-        const movieRate=document.createElement("h5")
-        movieRate.textContent=`rate: ${movie.rate}}`
-        
+      const movieUserID = document.createElement("h5");
+      movieUserID.textContent = `ID: ${movie.id}`;
+      const movieUserName = document.createElement("h5");
+      movieUserName.textContent = `Username: ${movie.username}`;
+      const movieUserEmail = document.createElement("h5");
+      movieUserEmail.textContent = `email: ${movie.email}`;
+      const movieFullAddress = document.createElement("h5");
+      movieFullAddress.textContent = ` fullAddress: ${movie.fullAddress}`;
+      const movieCompany = document.createElement("h5");
+      movieCompany.textContent = `company: ${movie.company}`;
+      const movieRate = document.createElement("h5");
+      movieRate.textContent = `rate: ${movie.rate}}`;
 
-        
-
-        
-
-        
-
-        movieViewerCard.appendChild(movieTitle);
-        movieViewerCard.append(movieUserID);
-        movieViewerCard.append(movieUserName);
-        movieViewerCard.append(movieUserEmail);
-        movieViewerCard.append(movieFullAddress);
-        movieViewerCard.append(movieCompany);
-        movieViewerCard.append(movieRate);
-        showMoviesPanel.appendChild(movieViewerCard);
-      })
-    ;
+      movieViewerCard.appendChild(movieTitle);
+      movieViewerCard.append(movieUserID);
+      movieViewerCard.append(movieUserName);
+      movieViewerCard.append(movieUserEmail);
+      movieViewerCard.append(movieFullAddress);
+      movieViewerCard.append(movieCompany);
+      movieViewerCard.append(movieRate);
+      showMoviesPanel.appendChild(movieViewerCard);
+    });
   }
 });
-
 
 /* uso el boton RESET para reiniciar el formulario y quitar 
 los estilos de los inputs */
 resetButton.addEventListener("click", (e) => {
   e.preventDefault();
   searchForm.reset();
-  
-  moviesSearchFormInputs.forEach(input=>{
+
+  moviesSearchFormInputs.forEach((input) => {
+    document.getElementById(`${input.name}Fine`).classList.add("itsFineInput");
     document
-          .getElementById(`${input.name}Fine`)
-          .classList.add("itsFineInput");
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.remove("itsFineInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.remove("errorInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.add("errorInput")
-  })
-  
+      .getElementById(`${input.name}Fine`)
+      .classList.remove("itsFineInputActive");
+    document
+      .getElementById(`${input.name}Error`)
+      .classList.remove("errorInputActive");
+    document.getElementById(`${input.name}Error`).classList.add("errorInput");
+  });
 });
