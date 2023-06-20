@@ -361,8 +361,10 @@ const movies = [
     image: "https://flxt.tmsimg.com/assets/p22005_p_v8_aa.jpg",
   },
 ];
-const resetButton=document.getElementById('resetButton')
-const showMoviesPanel=document.getElementById('showMoviesPanel')
+
+let requestedMovies = [];
+const resetButton = document.getElementById("resetButton");
+const showMoviesPanel = document.getElementById("showMoviesPanel");
 const searchForm = document.getElementById("searchMoviesForm");
 const moviesSearchFormInputs = document.querySelectorAll("input");
 const fromDate = document.getElementById("watchedFromIdInput");
@@ -387,6 +389,8 @@ movies.forEach(({ ...movie }) => {
 const firstDateRegistered = Math.min(...registerDates);
 const lastDateRegistered = Math.max(...registerDates);
 
+
+
 /* Creo un objeto con los haciendo referencia a los 4 inputs */
 const moviesFieldsInputs = {
   userIdInput: false,
@@ -395,18 +399,21 @@ const moviesFieldsInputs = {
   rateIdinput: false,
 };
 
+
+/* Diccionario con las funciones de validacion utilizadas en cada input */
 const validations = {
   userIdInput: (idUser) => {
     if (/^[0-9]*$/.test(idUser.value)) {
-      
       return true;
     }
-    if (!/^[0-9]*$/.test(idUser.value) ) {
-      
+    if (!/^[0-9]*$/.test(idUser.value)) {
       return false;
     }
-    if(idUser.value===''){
-      return false
+    if (idUser.value === "") {
+      return false;
+    }
+    if (idUser.value<=0 && 10<idUser.value) {
+      return false;
     }
   },
   watchedFromIdInput: (date) => {
@@ -426,8 +433,6 @@ const validations = {
         (dateFromSelected <= lastDateRegistered)
       )
     ) {
-      
-
       return false;
     }
   },
@@ -440,6 +445,7 @@ const validations = {
       dateHelper <= dateToSelected &&
       dateHelper != 0
     ) {
+      console.log(dateToSelected)
       return true;
     }
     if (
@@ -466,31 +472,56 @@ const validations = {
 };
 
 
+/* agrego un eventlistener a cada input, este listener cumple la funcion de mostrar
+el error al llenar un input o el exito al hacerlo, se hace mas extenso porque en el caso de los input del tipo DATE 
+considere un mejor resultado agregando un evento input y no el evento keyup */
 moviesSearchFormInputs.forEach((input) => {
   if ((input.name === "userIdInput") | (input.name === "rateIdinput")) {
     input.addEventListener("keyup", (e) => {
       validations[input.name](input);
       if (validations[input.name](input)) {
         moviesFieldsInputs[input.name] = true;
-        document.getElementById(`${input.name}Fine`).classList.add('itsFineInputActive')
-        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInput')
-        document.getElementById(`${input.name}Error`).classList.add('errorInput')
-        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
-        
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.add("itsFineInputActive");
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.remove("itsFineInput");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.add("errorInput");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.remove("errorInputActive");
       }
       if (!validations[input.name](input) | (input.value === "")) {
         moviesFieldsInputs[input.name] = false;
-        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
-        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
-        document.getElementById(`${input.name}Error`).classList.add('errorInputActive')
-        document.getElementById(`${input.name}Error`).classList.remove('errorInput')
-        
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.add("itsFineInput");
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.remove("itsFineInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.add("errorInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.remove("errorInput");
       }
-      if (input.value ===""){
-        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
-        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
-        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
-        document.getElementById(`${input.name}Error`).classList.add('errorInput')
+      if (input.value === "") {
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.add("itsFineInput");
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.remove("itsFineInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.remove("errorInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.add("errorInput");
       }
     });
   }
@@ -501,96 +532,117 @@ moviesSearchFormInputs.forEach((input) => {
     input.addEventListener("input", (e) => {
       validations[input.name](input);
       if (validations[input.name](input)) {
-        
         moviesFieldsInputs[input.name] = true;
-        document.getElementById(`${input.name}Fine`).classList.add('itsFineInputActive')
-        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInput')
-        document.getElementById(`${input.name}Error`).classList.add('errorInput')
-        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
-        
-        
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.add("itsFineInputActive");
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.remove("itsFineInput");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.add("errorInput");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.remove("errorInputActive");
       }
       if (!validations[input.name](input) | (input.value === "")) {
         moviesFieldsInputs[input.name] = false;
-        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
-        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
-        document.getElementById(`${input.name}Error`).classList.add('errorInputActive')
-        document.getElementById(`${input.name}Error`).classList.remove('errorInput')
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.add("itsFineInput");
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.remove("itsFineInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.add("errorInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.remove("errorInput");
       }
 
-
-      if(input.value === ""){
-        document.getElementById(`${input.name}Fine`).classList.add('itsFineInput')
-        document.getElementById(`${input.name}Fine`).classList.remove('itsFineInputActive')
-        document.getElementById(`${input.name}Error`).classList.remove('errorInputActive')
-        document.getElementById(`${input.name}Error`).classList.add('errorInput')
+      if (input.value === "") {
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.add("itsFineInput");
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.remove("itsFineInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.remove("errorInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.add("errorInput");
       }
     });
   }
 });
 
-
-const requestedMovies=[];
-  
-
-
+/* Funcion filterMovies dentro se encarga de buscar las coincidencias 
+expuestas en los condicionales. Utilice un arreglo vacio fuera de la funcion el cual se llena mediante una funcion interna llamada 
+registerViewer
+*/
 
 const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
+  const fromDateValueCompare=new Date(fromDate.value).getTime()+ 67653000;
+  const toDateValueCompare=new Date(toDate.value).getTime()+26541000;
 
-  const registerViewer=({userId:userId,movie:movie})=>{
-    users.forEach(user=>{
-    if(user.id===Number(userId)){
-      const viewer ={
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        fullAddress: `${user.address.street} - ${user.address.city}`,
-        company: user.company.name,
-        movie: movie.title,
-        rate: movie.rate
+  const registerViewer = ({ userId: userId, movie: movie }) => {
+    users.forEach((user) => {
+      if (user.id === Number(userId)) {
+        const viewer = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          fullAddress: `${user.address.street} - ${user.address.city}`,
+          company: user.company.name,
+          movie: movie.title,
+          rate: movie.rate,
+        };
+        
+        requestedMovies.push(viewer);
+      }
+    });
+  };
+
+  if (userId.value) {
+    movies.forEach(({ ...movie }) => {
+      if (
+        movie.userId === Number(userId.value) 
+      ) {
+        
+        if(fromDateValueCompare <=
+        new Date(movie.watched).getTime() &&
+        new Date(movie.watched).getTime() <= toDateValueCompare &&
+        Number(rate.value) <= movie.rate){
+          
+          registerViewer({ userId: movie.userId, movie: movie });
         }
-        console.log(viewer);
-        requestedMovies.push(viewer)
-    }
-  })
+        
+      }
+    });
   }
 
-
-        if(userId.value){
-          movies.forEach(({...movie})=>{
-
-            if(movie.userId===Number(userId.value) && new Date(fromDate.value).getTime() <= new Date(movie.watched).getTime() &&
-            new Date(movie.watched).getTime() <= new Date(toDate.value).getTime() && Number(rate.value)<=movie.rate){
-              
-              registerViewer({userId:userId.value,movie:movie})
-            }
-
-          });
-        }
-
-        if(!userId.value){
-
-          movies.forEach(({...movie})=>{
-
-            if(new Date(fromDate.value).getTime() <= new Date(movie.watched).getTime() &&
-            new Date(movie.watched).getTime() <= new Date(toDate.value).getTime() && Number(rate.value)<=movie.rate){
-              
-              registerViewer({userId:movie.userId,movie:movie})
-            }
-
-          })
-          
-        }
-
-       
-
-
-        console.log(requestedMovies);
-
+  if (!userId.value) {
+    movies.forEach(({ ...movie }) => {
+      if (fromDateValueCompare <=
+        new Date(movie.watched).getTime() &&
+        new Date(movie.watched).getTime() <= toDateValueCompare &&
+        Number(rate.value) <= movie.rate) {
+        registerViewer({ userId: movie.userId, movie: movie });
       }
-      
- 
+    });
+  }
 
+  
+};
+
+
+/* agrego listener al boton de busqueda el cual ejecuta la funcion de busqueda y luego ejecuta un map 
+sobre el array que posee las peliculas filtradas  para mostrar
+los objetos en pantalla */
 
 searchButton.addEventListener("click", (e) => {
   e.preventDefault();
@@ -599,57 +651,80 @@ searchButton.addEventListener("click", (e) => {
     moviesFieldsInputs.watchedToIdInput &&
     moviesFieldsInputs.rateIdinput
   ) {
-
-    setTimeout(filterMovies({
-      users: users,
-      movies: movies,
-      userId: userId,
-      fromDate: fromDate,
-      toDate: toDate,
-      rate: rate,
-    }),1500)
-    ;
-
-    
-
-
     setTimeout(
-      requestedMovies.map(movie=>{
-        const movieViewerCard=document.createElement('div')
-        movieViewerCard.classList.toggle('box1')
-  
-        const movieTitle=document.createElement('h3')
-        movieTitle.textContent= `${movie.movie}`
-        
-        const infoMovie=document.createElement('div')
-        infoMovie.textContent=`
-        ID: ${movie.id}<br>
+      filterMovies({
+        users: users,
+        movies: movies,
+        userId: userId,
+        fromDate: fromDate,
+        toDate: toDate,
+        rate: rate,
+      }),
+      1500
+    );
 
-        Username: ${movie.username}
-
-        email: ${movie.email}
-
-        fullAddress: ${movie.fullAddress}
-
-        company: ${movie.company}
-
-        rate: ${movie.rate}`
-
-        movieViewerCard.appendChild(movieTitle)
-        movieViewerCard.append(infoMovie)
-        showMoviesPanel.appendChild(movieViewerCard)
-      }),2500
     
+      requestedMovies.map((movie) => {
 
-    )
+        const movieViewerCard = document.createElement("div");
+        movieViewerCard.classList.add("box1");
+
+        const movieTitle = document.createElement("h3");
+        movieTitle.textContent = `${movie.movie}`;
+        
+        const movieUserID = document.createElement("h5");
+        movieUserID.textContent = `ID: ${movie.id}`
+        const movieUserName=document.createElement("h5")
+        movieUserName.textContent=`Username: ${movie.username}`
+        const movieUserEmail=document.createElement("h5")
+        movieUserEmail.textContent=`email: ${movie.email}`
+        const movieFullAddress=document.createElement("h5")
+        movieFullAddress.textContent=` fullAddress: ${movie.fullAddress}`
+        const movieCompany=document.createElement("h5")
+        movieCompany.textContent=`company: ${movie.company}`
+        const movieRate=document.createElement("h5")
+        movieRate.textContent=`rate: ${movie.rate}}`
+        
+
+        
+
+        
+
+        
+
+        movieViewerCard.appendChild(movieTitle);
+        movieViewerCard.append(movieUserID);
+        movieViewerCard.append(movieUserName);
+        movieViewerCard.append(movieUserEmail);
+        movieViewerCard.append(movieFullAddress);
+        movieViewerCard.append(movieCompany);
+        movieViewerCard.append(movieRate);
+        showMoviesPanel.appendChild(movieViewerCard);
+      })
+    ;
   }
-
-
-  
 });
 
-resetButton.addEventListener('click',(e)=>{
-  e.preventDefault()
-  searchForm.reset()
-})
 
+/* uso el boton RESET para reiniciar el formulario y quitar 
+los estilos de los inputs */
+resetButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  searchForm.reset();
+  
+  moviesSearchFormInputs.forEach(input=>{
+    document
+          .getElementById(`${input.name}Fine`)
+          .classList.add("itsFineInput");
+        document
+          .getElementById(`${input.name}Fine`)
+          .classList.remove("itsFineInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.remove("errorInputActive");
+        document
+          .getElementById(`${input.name}Error`)
+          .classList.add("errorInput")
+  })
+  
+});
