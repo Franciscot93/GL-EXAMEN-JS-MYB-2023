@@ -469,111 +469,51 @@ const validations = {
 };
 
 /* agrego un eventlistener a cada input, este listener cumple la funcion de mostrar
-el error al llenar un input o el exito al hacerlo, se hace mas extenso porque en el caso de los input del tipo DATE 
-considere un mejor resultado agregando un evento input y no el evento keyup */
+el error al llenar un input o el exito al hacerlo*/
 moviesSearchFormInputs.forEach((input) => {
-  if ((input.name === "userIdInput") | (input.name === "rateIdinput")) {
-    input.addEventListener("keyup", (e) => {
-      validations[input.name](input);
-      if (validations[input.name](input)) {
-        moviesFieldsInputs[input.name] = true;
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.add("itsFineInputActive");
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.remove("itsFineInput");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.add("errorInput");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.remove("errorInputActive");
-      }
-      if (!validations[input.name](input) | (input.value === "")) {
-        moviesFieldsInputs[input.name] = false;
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.add("itsFineInput");
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.remove("itsFineInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.add("errorInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.remove("errorInput");
-      }
-      if (input.value === "") {
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.add("itsFineInput");
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.remove("itsFineInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.remove("errorInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.add("errorInput");
-      }
-    });
-  }
-  if (
-    (input.name === "watchedFromIdInput") |
-    (input.name === "watchedToIdInput")
-  ) {
-    input.addEventListener("input", (e) => {
-      validations[input.name](input);
-      if (validations[input.name](input)) {
-        moviesFieldsInputs[input.name] = true;
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.add("itsFineInputActive");
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.remove("itsFineInput");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.add("errorInput");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.remove("errorInputActive");
-      }
-      if (!validations[input.name](input) | (input.value === "")) {
-        moviesFieldsInputs[input.name] = false;
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.add("itsFineInput");
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.remove("itsFineInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.add("errorInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.remove("errorInput");
-      }
-
-      if (input.value === "") {
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.add("itsFineInput");
-        document
-          .getElementById(`${input.name}Fine`)
-          .classList.remove("itsFineInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.remove("errorInputActive");
-        document
-          .getElementById(`${input.name}Error`)
-          .classList.add("errorInput");
-      }
-    });
-  }
+  input.addEventListener("keyup", (e) => {
+    validations[input.name](input);
+    if (validations[input.name](input)) {
+      moviesFieldsInputs[input.name] = true;
+      document
+        .getElementById(`${input.name}Fine`)
+        .classList.add("itsFineInputActive");
+      document
+        .getElementById(`${input.name}Fine`)
+        .classList.remove("itsFineInput");
+      document.getElementById(`${input.name}Error`).classList.add("errorInput");
+      document
+        .getElementById(`${input.name}Error`)
+        .classList.remove("errorInputActive");
+    }
+    if (!validations[input.name](input) | (input.value === "")) {
+      moviesFieldsInputs[input.name] = false;
+      document
+        .getElementById(`${input.name}Fine`)
+        .classList.add("itsFineInput");
+      document
+        .getElementById(`${input.name}Fine`)
+        .classList.remove("itsFineInputActive");
+      document
+        .getElementById(`${input.name}Error`)
+        .classList.add("errorInputActive");
+      document
+        .getElementById(`${input.name}Error`)
+        .classList.remove("errorInput");
+    }
+    if (input.value === "") {
+      document
+        .getElementById(`${input.name}Fine`)
+        .classList.add("itsFineInput");
+      document
+        .getElementById(`${input.name}Fine`)
+        .classList.remove("itsFineInputActive");
+      document
+        .getElementById(`${input.name}Error`)
+        .classList.remove("errorInputActive");
+      document.getElementById(`${input.name}Error`).classList.add("errorInput");
+    }
+  });
 });
 
 /* Funcion filterMovies dentro se encarga de buscar las coincidencias 
