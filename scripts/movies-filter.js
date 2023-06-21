@@ -363,6 +363,7 @@ const movies = [
 ];
 
 let requestedMovies = [];
+const moviesCardsContainer=document.getElementById('moviesCardsContainer')
 const resetButton = document.getElementById("resetButton");
 const showMoviesPanel = document.getElementById("showMoviesPanel");
 const searchForm = document.getElementById("searchMoviesForm");
@@ -611,7 +612,7 @@ searchButton.addEventListener("click", (e) => {
       const movieCompany = document.createElement("h5");
       movieCompany.textContent = `company: ${movie.company}`;
       const movieRate = document.createElement("h5");
-      movieRate.textContent = `rate: ${movie.rate}}`;
+      movieRate.textContent = `rate: ${movie.rate}`;
 
       movieViewerCard.appendChild(movieTitle);
       movieViewerCard.append(movieUserID);
@@ -620,7 +621,7 @@ searchButton.addEventListener("click", (e) => {
       movieViewerCard.append(movieFullAddress);
       movieViewerCard.append(movieCompany);
       movieViewerCard.append(movieRate);
-      showMoviesPanel.appendChild(movieViewerCard);
+      moviesCardsContainer.appendChild(movieViewerCard);
     });
   }
 });
@@ -641,4 +642,7 @@ resetButton.addEventListener("click", (e) => {
       .classList.remove("errorInputActive");
     document.getElementById(`${input.name}Error`).classList.add("errorInput");
   });
+
+  moviesCardsContainer.textContent=''
+  
 });
