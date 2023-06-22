@@ -65,19 +65,27 @@ button {
   box-shadow: 3px 3px 20px rgba(0, 0, 0, .5);
   color: #24f82ee7;
   font-weight: bold;
-  background-color: #000000bd;
+  background-color: #000000b9;
   font-family: "Rajdhani";
 }
 button:hover {
-  background-color: #770202e7;
-  color: #000000;
+  background-color: #02773D;
+  color: rgb(234, 234, 234);
   text-shadow: 1px 2px 2px rgba(250, 250, 250, 0.26);
 }
 .footer-element {
   margin: 1em auto;
   content: normal;
 }
-
+.socialIcons{
+  -social-transition: 1s linear;
+  transition: 1s linear;
+  margin-left: 1em;
+}
+.socialIcons:hover{
+  -social-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
 .containerFooter {
   display: grid;
   justify-content: space-between;
@@ -128,7 +136,8 @@ button:hover {
   opacity: 1;
 }
 .spanError {
-  color: red;
+ color: #ff0000;
+  
   font-size: 1rem;
 }
 
@@ -193,7 +202,11 @@ button:hover {
 }
 
 #resetButton {
-  color: #f0ed33;
+  color: #f0ed31fb;
+}
+#resetButton:hover{
+  color:rgb(240, 237, 49);
+  background-color: rgb(119, 2, 61);
 }
 img{
   max-width: 100%;
@@ -211,6 +224,16 @@ img{
     display: flex;
     width: 15%;
     font-size: 2rem;
+  }
+  .logoNav{
+    -logo-transition: 1s linear;
+  transition: 1s linear;
+  
+
+  }
+  .logoNav:hover{
+    -logo-transform: perspective(150px) rotateX(45deg);
+  transform: perspective(150px) rotateX(45deg);
   }
   .containerFooter {
     display: inline-flex;
