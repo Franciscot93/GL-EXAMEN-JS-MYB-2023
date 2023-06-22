@@ -377,8 +377,10 @@ rate.setAttribute("maxLength", "3");
 const searchButton = document.getElementById("searchButton");
 
 /* CREO UN ARREGLO VACIO AL CUAL LE AGREGO LAS FECHAS EN MILISEGUNDOS DE TODAS LAS PELICULAS  
-PARA LUEGO VALIDAR QUE LAS FECHAS INGRESADAS ESTAN EN EL RANGO DE FECHAS EXISTENTES EN EL ARREGLO.
-CREO UNA VARIABLE dateHelper PARA ALMACENAR EL VALOR DE LA PRIMERA FECHA Y COMPARAR LA SEGUNDA*/
+PARA LUEGO VALIDAR QUE LAS FECHAS INGRESADAS ESTAN EN EL RANGO DE FECHAS EXISTENTES EN EL ARREGLO, 
+ESE RANGO LO DETERMINO CON
+LAS VARIABLES firstDateRegistered Y lastDateRegistered
+CREO UNA VARIABLE dateHelper PARA ALMACENAR EL VALOR DE LA PRIMERA FECHA (durante la validacion) Y COMPARAR LA SEGUNDA*/
 const registerDates = [];
 let dateHelper = 0;
 movies.forEach(({ ...movie }) => {
@@ -519,10 +521,14 @@ moviesSearchFormInputs.forEach((input) => {
 
 /* Funcion filterMovies dentro se encarga de buscar las coincidencias 
 expuestas en los condicionales. Utilice un arreglo vacio fuera de la funcion el cual se llena mediante una funcion interna llamada 
-registerViewer
+registerViewer, LA Funcion tiene dos condicionales principales dentro, uno por si el usuario ingresa el ID y
+otro por si no lo ingresa
 */
 
 const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
+
+  /* Tenia un problema con las fechas que solucione calculando una diferencia en milisegundos
+  y agregandosela al valor calculado de los inputs de fechas (toDate y fromDate) */
   const fromDateValueCompare = new Date(fromDate.value).getTime() + 67653000;
   const toDateValueCompare = new Date(toDate.value).getTime() + 26541000;
 
@@ -537,6 +543,7 @@ const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
           company: user.company.name,
           movie: movie.title,
           rate: movie.rate,
+          image:movie.image
         };
 
         requestedMovies.push(viewer);
@@ -597,7 +604,8 @@ searchButton.addEventListener("click", (e) => {
     requestedMovies.map((movie) => {
       const movieViewerCard = document.createElement("div");
       movieViewerCard.classList.add("box1");
-
+      const movieImage=document.createElement('img')
+      movieImage.src=`${movie.image}`
       const movieTitle = document.createElement("h3");
       movieTitle.textContent = `${movie.movie}`;
 
@@ -614,6 +622,7 @@ searchButton.addEventListener("click", (e) => {
       const movieRate = document.createElement("h5");
       movieRate.textContent = `rate: ${movie.rate}`;
 
+      movieViewerCard.appendChild(movieImage)
       movieViewerCard.appendChild(movieTitle);
       movieViewerCard.append(movieUserID);
       movieViewerCard.append(movieUserName);

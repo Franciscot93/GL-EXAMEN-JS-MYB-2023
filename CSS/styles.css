@@ -57,6 +57,7 @@ input {
   font-family: "Rajdhani";
   font-weight: bold;
 }
+
 button {
   width: 25%;
   padding: 1em;
@@ -135,7 +136,7 @@ button:hover {
 .form-element {
   display: grid;
   place-items: center;
-  margin: 1em auto;
+  margin: 0 auto;
   width: 100%;
 }
 .box1 {
@@ -187,7 +188,7 @@ button:hover {
   display: grid;
   place-items: center;
 
-  grid-template-rows: 1fr 1fr;
+  
   grid-row-start: 3;
   grid-row-end: 4;
   align-items: center;
@@ -196,9 +197,18 @@ button:hover {
 #resetButton {
   color: #f0ed33;
 }
-
+img{
+  max-width: 100%;
+  mix-blend-mode: screen;
+  position:relative
+}
 
 @media (width >=768px) {
+  img{
+    max-width: 100%;
+    mix-blend-mode: screen;
+    position:relative
+  }
   .nav-element {
     display: flex;
     width: 15%;
@@ -240,12 +250,18 @@ button:hover {
     border: 1px solid #fafafa;
     text-align: center;
     display: grid;
-
+    transition: all 400ms ease-in;
     margin: 1em auto;
+    filter: grayscale(1) opacity(.8)
+  }
+  .box1:hover{
+    filter: grayscale(0) opacity(1);
+    
   }
   .form-element {
     margin-bottom: 2em;
     text-align: center;
+    place-items: center;
   }
 
   .box {
@@ -267,13 +283,19 @@ button:hover {
   }
 
   #hero {
+    position: relative;
     display: block;
-    width: 100%;
+    max-width: 100%;
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 2;
     grid-row-end: 3;
+    text-align: center;
+    background-color: #000000;
+    
   }
+  
+  
 
   #sectionForm {
     grid-column-start: 1;
@@ -302,8 +324,73 @@ button:hover {
     display: grid;
     place-items: center;
     position: relative;
-    grid-row-start: 2;
-    grid-row-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
     }
     
+    .hero-container {
+      color: var(--color);
+      font-size: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .bannerbot {
+      text-align: center;
+      width: 100%;
+      color: #fafafa;
+    }
+    
+    .stack {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .stack span {
+      color:#fafafa;
+      font-weight: bold;
+      grid-row-start: 1;
+      grid-column-start: 1;
+      font-size: 4rem;
+      --stack-height: calc(100% / var(--stacks) - 1px);
+      --inverse-index: calc(calc(var(--stacks) - 1) - var(--index));
+      --clip-top: calc(var(--stack-height) * var(--index));
+      --clip-bottom: calc(var(--stack-height) * var(--inverse-index));
+      clip-path: inset(var(--clip-top) 0 var(--clip-bottom) 0);
+      animation: stack 180ms cubic-bezier(.46,.29,0,1.24) 1 backwards calc(var(--index) * 120ms), glitch 2s ease infinite 2s alternate-reverse;
+    }
+    
+    .stack span:nth-child(odd) { --glitch-translate: 8px; }
+    .stack span:nth-child(even) { --glitch-translate: -8px; }
+    
+    @keyframes stack {
+      0% {
+        opacity: 1;
+        transform: translateX(-50%);
+        text-shadow: -2px 3px 0 rgb(236, 18, 18)d, 2px -3px 0 rgb(5, 5, 231);
+      };
+      60% {
+        opacity: 0.5;
+        transform: translateX(50%);
+      }
+      80% {
+        transform: none;
+        opacity: 1;
+        text-shadow: 2px -3px 0 rgb(236, 18, 18), -2px 3px 0 rgb(5, 5, 231);
+      }
+      100% {
+        text-shadow: none;
+      }
+    }
+    
+    @keyframes glitch {
+      0% {
+        text-shadow: -2px 3px 0 red, 2px -3px 0 blue;
+        transform: translate(var(--glitch-translate));
+      }
+      2% {
+        text-shadow: 2px -3px 0 red, -2px 3px 0 blue;
+      }
+      4%, 100% {  text-shadow: none; transform: none; }
+    }
 }
