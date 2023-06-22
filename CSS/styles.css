@@ -40,8 +40,8 @@ form {
   place-items: center;
   width: 100%;
   align-items: center;
-  border: 2px solid #f5beda;
-  border-radius: 8px;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, .5);
+ 
 }
 input {
   width: 50%;
@@ -49,11 +49,10 @@ input {
   place-items: center;
   padding: 5px;
   font-size: 1rem;
-  border-width: 1px;
-  border-color: #cccccc;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, .5);
   background-color: #ffffffa2;
   color: #000000;
-  border-radius: 5px;
+  border-radius: 4px;
   font-family: "Rajdhani";
   font-weight: bold;
 }
@@ -63,8 +62,8 @@ button {
   padding: 1em;
   font-size: 1rem;
   border-radius: 5px;
-  border-color: #7702026b;
-  color: #770202e7;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, .5);
+  color: #24f82ee7;
   font-weight: bold;
   background-color: #000000bd;
   font-family: "Rajdhani";
@@ -142,8 +141,7 @@ button:hover {
 .box1 {
   width: 85%;
   display: grid;
-  border: 1px solid #fafafa;
-  border-radius: 5px;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, .5);
   position: relative;
   place-items: center;
   margin: 1em auto;
@@ -247,7 +245,7 @@ img{
   .box1 {
     width: 400px;
     justify-content: center;
-    border: 1px solid #fafafa;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, .5);
     text-align: center;
     display: grid;
     transition: all 400ms ease-in;
@@ -267,6 +265,43 @@ img{
   .box {
     width: 100%;
   }
+
+  .hero-container {
+    color: var(--color);
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .banner-botom {
+    text-align: center;
+    width: 100%;
+    color: #fafafa;
+  }
+  
+  .stack {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .stack span {
+    color:#fafafa;
+    font-weight: bold;
+    grid-row-start: 1;
+    grid-column-start: 1;
+    font-size: 4rem;
+    --stack-height: calc(100% / var(--stacks) - 1px);
+    --inverse-index: calc(calc(var(--stacks) - 1) - var(--index));
+    --clip-top: calc(var(--stack-height) * var(--index));
+    --clip-bottom: calc(var(--stack-height) * var(--inverse-index));
+    clip-path: inset(var(--clip-top) 0 var(--clip-bottom) 0);
+    animation: stack 180ms cubic-bezier(.46,.29,0,1.24) 1 backwards calc(var(--index) * 120ms), glitch 2s ease infinite 2s alternate-reverse;
+  }
+  
+  .stack span:nth-child(odd) { --glitch-translate: 8px; }
+  .stack span:nth-child(even) { --glitch-translate: -8px; }
+  
+
   #burguer-button {
     display: none;
   }
@@ -280,6 +315,7 @@ img{
     justify-content: space-around;
     background-color: #f000;
     font-size: 0.5rem;
+    
   }
 
   #hero {
@@ -292,6 +328,7 @@ img{
     grid-row-end: 3;
     text-align: center;
     background-color: #000000;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, .5);
     
   }
   
@@ -304,6 +341,7 @@ img{
     grid-row-end: 5;
     width: 100%;
     height: 100%;
+    
   }
   #showMoviesPanel {
     position: relative;
@@ -328,40 +366,6 @@ img{
     grid-row-end: 2;
     }
     
-    .hero-container {
-      color: var(--color);
-      font-size: 1.5rem;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .bannerbot {
-      text-align: center;
-      width: 100%;
-      color: #fafafa;
-    }
-    
-    .stack {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-
-    .stack span {
-      color:#fafafa;
-      font-weight: bold;
-      grid-row-start: 1;
-      grid-column-start: 1;
-      font-size: 4rem;
-      --stack-height: calc(100% / var(--stacks) - 1px);
-      --inverse-index: calc(calc(var(--stacks) - 1) - var(--index));
-      --clip-top: calc(var(--stack-height) * var(--index));
-      --clip-bottom: calc(var(--stack-height) * var(--inverse-index));
-      clip-path: inset(var(--clip-top) 0 var(--clip-bottom) 0);
-      animation: stack 180ms cubic-bezier(.46,.29,0,1.24) 1 backwards calc(var(--index) * 120ms), glitch 2s ease infinite 2s alternate-reverse;
-    }
-    
-    .stack span:nth-child(odd) { --glitch-translate: 8px; }
-    .stack span:nth-child(even) { --glitch-translate: -8px; }
     
     @keyframes stack {
       0% {
