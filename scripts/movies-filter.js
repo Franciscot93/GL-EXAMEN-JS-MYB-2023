@@ -363,7 +363,7 @@ const movies = [
 ];
 
 let requestedMovies = [];
-const moviesCardsContainer=document.getElementById('moviesCardsContainer')
+const moviesCardsContainer = document.getElementById("moviesCardsContainer");
 const resetButton = document.getElementById("resetButton");
 const showMoviesPanel = document.getElementById("showMoviesPanel");
 const searchForm = document.getElementById("searchMoviesForm");
@@ -526,7 +526,6 @@ otro por si no lo ingresa
 */
 
 const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
-
   /* Tenia un problema con las fechas que solucione calculando una diferencia en milisegundos
   y agregandosela al valor calculado de los inputs de fechas (toDate y fromDate) */
   const fromDateValueCompare = new Date(fromDate.value).getTime() + 67653000;
@@ -543,7 +542,7 @@ const filterMovies = ({ users, movies, userId, fromDate, toDate, rate }) => {
           company: user.company.name,
           movie: movie.title,
           rate: movie.rate,
-          image:movie.image
+          image: movie.image,
         };
 
         requestedMovies.push(viewer);
@@ -604,8 +603,8 @@ searchButton.addEventListener("click", (e) => {
     requestedMovies.map((movie) => {
       const movieViewerCard = document.createElement("div");
       movieViewerCard.classList.add("box1");
-      const movieImage=document.createElement('img')
-      movieImage.src=`${movie.image}`
+      const movieImage = document.createElement("img");
+      movieImage.src = `${movie.image}`;
       const movieTitle = document.createElement("h3");
       movieTitle.textContent = `${movie.movie}`;
 
@@ -622,7 +621,7 @@ searchButton.addEventListener("click", (e) => {
       const movieRate = document.createElement("h5");
       movieRate.textContent = `rate: ${movie.rate}`;
 
-      movieViewerCard.appendChild(movieImage)
+      movieViewerCard.appendChild(movieImage);
       movieViewerCard.appendChild(movieTitle);
       movieViewerCard.append(movieUserID);
       movieViewerCard.append(movieUserName);
@@ -652,6 +651,5 @@ resetButton.addEventListener("click", (e) => {
     document.getElementById(`${input.name}Error`).classList.add("errorInput");
   });
 
-  moviesCardsContainer.textContent=''
-  
+  moviesCardsContainer.textContent = "";
 });
