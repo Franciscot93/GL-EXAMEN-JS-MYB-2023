@@ -1,3 +1,4 @@
+/* users y movies contienen los arrays de objetos que nos brindas los datos para trabajar*/
 const users = [
   {
     id: 1,
@@ -362,6 +363,10 @@ const movies = [
   },
 ];
 
+/*requestMovies array vacio para pushear los objetos creados posteriormente
+Aqui declaro las variables que me traen los input, buttons , el formulario y el panel donde 
+muestro la info solicitada 
+*/
 let requestedMovies = [];
 const moviesCardsContainer = document.getElementById("moviesCardsContainer");
 const resetButton = document.getElementById("resetButton");
@@ -392,7 +397,9 @@ movies.forEach(({ ...movie }) => {
 const firstDateRegistered = Math.min(...registerDates);
 const lastDateRegistered = Math.max(...registerDates);
 
-/* Creo un objeto con los haciendo referencia a los 4 inputs */
+/* Creo un objeto con los haciendo referencia a los 4 inputs
+cada booleano sirve para posteriormente cuando el usuario busque 
+verifique que se han ingresado datos en los campos representados en el diccionario */
 const moviesFieldsInputs = {
   userIdInput: false,
   watchedFromIdInput: false,
@@ -599,7 +606,10 @@ searchButton.addEventListener("click", (e) => {
       }),
       1500
     );
-
+      /* aqui hago un map sobre el array requestedMovies para mostrar
+      los datos en pantalla, creo elementos html dentro de variables para 
+      poder manipular el contenido que quiero mostrar en cada card creada
+      posterior mente dentro de cada card ingreso la info con appenchild y append*/
     requestedMovies.map((movie) => {
       const movieViewerCard = document.createElement("div");
       movieViewerCard.classList.add("box1");
@@ -634,8 +644,9 @@ searchButton.addEventListener("click", (e) => {
   }
 });
 
-/* uso el boton RESET para reiniciar el formulario y quitar 
-los estilos de los inputs */
+/* uso el boton RESET para reiniciar el formulario, quitar 
+los estilos de los inputs y borrar el contenido del container donde se proyectan 
+las cards con la info solicitada */
 resetButton.addEventListener("click", (e) => {
   e.preventDefault();
   searchForm.reset();
